@@ -1,0 +1,53 @@
+.hotMovie {
+    display        : flex;
+    justify-content: space-between;
+    flex-wrap      : wrap;
+
+    .card-container {
+        width      : 16%;
+        flex-shrink: 0;
+        overflow: hidden;
+
+        .movie-card {
+            margin: 10px 8px 10px 0;
+        }
+
+    }
+
+    .card-img {
+        height: 300px;
+    }
+
+    .ant-card-body {
+        padding: 16px 24px;
+    }
+}
+
+/* ant-tag */
+.ant-tag.tag-orange {
+    background-color: #ff5c38;
+    border          : none;
+    color           : #fff;
+    position        : absolute;
+    top             : 5px;
+    left            : 5px;
+}
+
+.card-title {
+    font-size: 30px;
+}
+
+.banner-item {
+    margin-bottom: 20px;
+}
+
+.topContainer {
+    background-color: #fff;
+    position: sticky;
+    top     : 0;
+    z-index : 100;
+}
+
+.active{
+    box-shadow: 0 28px 50px rgba(25, 24, 40, .35);
+}

@@ -1,0 +1,59 @@
+@mixin flex {
+    display        : flex;
+    justify-content: space-between;
+    align-items    : center;
+}
+
+header {
+    height : 55px;
+    padding: 10px 0;
+    @include flex;
+
+    .logo {
+        width          : 125px;
+        height         : 25px;
+        display        : inline-block;
+        background     : url('../assets/douban-logo.png') no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .search {
+        width        : 330px;
+        height       : 39px;
+        box-shadow   : 0 4px 18px rgba(17, 18, 38, .07);
+        overflow     : hidden;
+        border-radius: 20px;
+        border       : 1px solid transparent;
+        @include flex;
+
+        input {
+            height   : 40px;
+            width    : 62%;
+            outline  : none;
+            border   : 0;
+            position : relative;
+            padding  : 0 0 0 30px;
+            font-size: 14px;
+            color    : #747474;
+        }
+
+        i {
+            padding-right: 5px;
+        }
+
+        .button {
+            background-color: #44883e;
+            text-align      : center;
+            line-height     : 40px;
+            flex            : 1;
+            color           : white;
+            font-size       : 14px;
+            cursor          : pointer;
+        }
+    }
+
+    .active {
+        border: 1px solid #44883e;
+        background-color: #44883e;
+    }
+}

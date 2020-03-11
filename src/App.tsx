@@ -1,9 +1,7 @@
-
-
 import React from 'react';
 import routes from './router/config';
 import {HashRouter,Route,Switch,Redirect} from 'react-router-dom'// 与路由相关的内置组件
-
+import './styles/reset.scss'
 
 function App() {
   return (
