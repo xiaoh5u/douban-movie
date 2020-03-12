@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
-import { Carousel, BackTop, Card, Tag } from 'antd';
-import { Link } from 'react-router-dom';
+import { Carousel, BackTop } from 'antd';
 import TopNav from '../../compoents/TopNav';
-import LazyLoad from 'react-lazyload';
+import CardList from '../../compoents/CardList'
 import api from '../../api/api'
 import classnames from 'classnames'
 import './home.scss'
+import { Link } from 'react-router-dom';
 
 interface IState {
     bannerList: Array<string>
     hotList: Array<string>
     isActive: boolean
+    newList: Array<string>
+    usData: any
+    isLoadingHotShow: boolean,
+    isLoadingNewMovie: boolean,
+    isLoadingGoodBox: boolean,
+    isLoadingWeeklyBox: boolean,
+    isLoadingTop250: boolean,
 }
 class home extends Component<IState> {
 
@@ -23,18 +30,24 @@ class home extends Component<IState> {
             require('../../assets/banner-005.jpg')
         ],
         hotList: [],
-        isActive: false
+        newList: [],
+        isActive: false,
+        usData: {},
+        isLoadingHotShow: true,
+        isLoadingNewMovie: true,
+        isLoadingGoodBox: true,
+        isLoadingWeeklyBox: true,
+        isLoadingTop250: true,
     }
 
-    //获取正在热映的电影数据
-    getHotMovie = () => {
-        api.getInfo('in_theaters', { start: 0, count: 12 })
-            .then((res: any) => {
-                this.setState({
-                    hotList: res.data.subjects
-                })
-            })
+    //数据请求集合
+    getData = () => {
+        api.getHotMovie().then((res: any) => { this.setState({ hotList: res.data.subjects, isLoadingHotShow: false }) })
+        api.getNewMovie().then((res: any) => { this.setState({ newList: res.data.subjects, isLoadingNewMovie: false }) })
+        api.getusMovie().then((res: any) => { this.setState({ usData: res.data, isLoadingGoodBox: false }) })
+
     }
+
     //头部导航监听事件
     handleScroll = () => {
         const scrollTop: number = window.scrollY
@@ -49,67 +62,110 @@ class home extends Component<IState> {
                 isActive: false
             })
         }
-
     }
 
 
     render() {
-        const { bannerList, hotList, isActive } = this.state
+        const { bannerList, hotList, isActive, newList, usData, isLoadingHotShow, isLoadingNewMovie, isLoadingGoodBox, isLoadingWeeklyBox, isLoadingTop250 } = this.state
+        const usList = usData.subjects
         return (
             <>
+                {/* 吸顶导航组件 */}
                 <div className={classnames("topContainer", isActive ? 'active' : '')}>
                     <div className="w">
                         <TopNav {...this.props} isActive={isActive} />
                     </div>
                 </div>
-                <Carousel autoplay>
-                    {bannerList.map((item: any, index: number) => {
-                        return (
-                            <div
-                                className="banner-item"
-                                key={index}>
-                                <img src={item} alt="banner" />
-                            </div>
-                        );
-                    })}
-                </Carousel>
-                <div className="w">
-                    <h2 className="card-title">正在热映</h2>
-                    <div className="hotMovie">
-                        {hotList &&
-                            hotList.map((item: any, index: number) =>
-                                <div className="card-container" key={index}>
-                                    <Card
-                                        className="movie-card"
-                                        hoverable
-                                        cover={
-                                            <Link to={`/detail/${item.id}`}>
-                                                <LazyLoad height={200} offset={100} >
-                                                    <img className="card-img" src={item.images.small} alt="" />
-                                                </LazyLoad>
-                                            </Link>
-
-                                        }
-                                    >
-                                        <Tag className="img-tag tag-orange">{item.rating.average}</Tag>
-                                        <Card.Meta
-                                            title={item.title}
-                                            description={item.genres.join("/")}
-                                        />
-                                    </Card>
+                <div className="banner">
+                    <Carousel autoplay dots>
+                        {bannerList.map((item: any, index: number) => {
+                            return (
+                                <div
+                                    className="banner-item"
+                                    key={index}>
+                                    <img src={item} alt="banner" />
                                 </div>
-                            )
-                        }
+                            );
+                        })}
+                    </Carousel>
+                </div>
+
+                <div className="w">
+                    {/*  正在热映板块 */}
+                    <h2 className="card-title">正在热映</h2>
+                    <ul className="hotMovie">
+                        <CardList list={hotList} name={'hot-movie-container'} {...this.props} count={6} isLoading={isLoadingHotShow}></CardList>
+                    </ul>
+
+
+                    <div className="box">
+                        {/*  豆瓣电影新片榜 */}
+                        <div className="module1">
+                            <h2 className="card-title">新片榜</h2>
+                            <ul className="newMovie">
+                                <CardList list={newList.slice(0, 8)} name={'new-movie-container'} {...this.props} count={4} isLoading={isLoadingNewMovie}></CardList>
+                            </ul>
+                        </div>
+                        {/* 豆瓣电影北美票房榜 */}
+                        <div className="module2">
+                            <h2 className="card-title">北美票房榜</h2>
+                            <p className={'date'}>
+                                {usData.date} 更新
+                                <span>单位:美元</span>
+                            </p>
+                            <ul className="us-box">
+                                {usData.subjects && usData.subjects.slice(0, 10).map((item: any, index: number) => {
+                                    let { rank, box, subject } = item;
+                                    let isNew: boolean = item.new
+                                    let { title, id, rating, collect_count } = subject;
+                                    return (
+                                        <li key={index}>
+                                            <div className="rank">{rank}</div>
+                                            <Link to={`/detail/${id}`}>
+                                                <div className="info">
+                                                    <h3 className="title">{title}</h3>
+                                                    <p className="summary">
+                                                        <span className={'box-new'}>{isNew ? '新上榜' : null}</span>
+                                                        {isNew ? ' / ' : null}
+                                                        {`${rating.average}分 / ${collect_count}收藏`}
+                                                    </p>
+                                                </div>
+                                            </Link>
+                                            <div className="box-office">{(box / 1e4).toFixed(0)}万</div>
+                                        </li>
+                                    )
+                                }
+                                )}
+                            </ul>
+                        </div>
                     </div>
+
+
+
                     <BackTop />
                 </div>
+
             </>
         );
     }
     componentDidMount() {
-        this.getHotMovie()
+        this.getData()
         window.addEventListener('scroll', this.handleScroll);
+
+        // 恢复到离开页面时的位置
+        const scrollTop: any = sessionStorage.getItem('scrollTop')
+        if (scrollTop != '' || scrollTop != undefined) {
+            setTimeout(() => {
+                window.scrollTo(0, scrollTop)
+            }, 500)
+        }
     }
+    componentWillUnmount() {
+        // 记录离开页面时的位置
+        const scrollTop: any = document.documentElement.scrollTop || document.body.scrollTop
+        sessionStorage.setItem('scrollTop', scrollTop)
+    }
+
 
 
 }

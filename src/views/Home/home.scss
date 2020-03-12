@@ -1,26 +1,8 @@
 .hotMovie {
     display        : flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap      : wrap;
-
-    .card-container {
-        width      : 16%;
-        flex-shrink: 0;
-        overflow: hidden;
-
-        .movie-card {
-            margin: 10px 8px 10px 0;
-        }
-
-    }
-
-    .card-img {
-        height: 300px;
-    }
-
-    .ant-card-body {
-        padding: 16px 24px;
-    }
+    margin-bottom  : 20px;
 }
 
 /* ant-tag */
@@ -37,17 +19,120 @@
     font-size: 30px;
 }
 
-.banner-item {
+.banner {
     margin-bottom: 20px;
 }
 
 .topContainer {
     background-color: #fff;
-    position: sticky;
-    top     : 0;
-    z-index : 100;
+    position        : sticky;
+    top             : 0;
+    z-index         : 100;
 }
 
-.active{
+.active {
     box-shadow: 0 28px 50px rgba(25, 24, 40, .35);
+}
+
+.box {
+    display        : flex;
+    justify-content: space-between;
+
+    .newMovie {
+
+        display        : flex;
+        justify-content: flex-start;
+        flex-wrap      : wrap;
+    }
+
+    .module1 {
+        width: 66.3%;
+    }
+
+    .module2 {
+        flex       : 1;
+        margin-left: 10px;
+
+        .date {
+            font-size      : 14px;
+            padding-right  : 32px;
+            display        : flex;
+            justify-content: space-between;
+            align-items    : center;
+        }
+
+        .us-box {
+            background-color: #f8f8f8;
+
+
+
+            li {
+                display        : flex;
+                justify-content: flex-start;
+                align-items    : center;
+                margin         : 10px 20px 12px 20px;
+                border-top     : 1px solid #eee;
+                position       : relative;
+
+                &:nth-of-type(-n+3) {
+                    .rank {
+                        background-image: linear-gradient(180deg, #ffb821 0, #ff5c38 45%, #ff1459);
+                    }
+                }
+
+                &:hover {
+                    .title {
+                        transition: 0.5s all;
+                        color     : #ff5c38;
+                    }
+                }
+
+                a:hover {
+                    color: inherit;
+                }
+
+                .title {
+                    font-size  : 20px;
+                    font-weight: 800;
+                }
+
+                .rank {
+                    width                  : 45px;
+                    text-align             : center;
+                    font-size              : 40px;
+                    font-weight            : 800;
+                    -webkit-text-fill-color: transparent;
+                    background-clip        : text;
+                    background-color       : #666;
+                }
+
+                .info {
+                    margin-left: 10px;
+                    padding-top: 10px;
+
+                    .summary {
+                        font-size  : 14px;
+                        font-weight: 400;
+
+                        span {
+                            color: #999;
+                        }
+
+                        .box-new {
+                            color: #ff1459;
+                        }
+                    }
+                }
+
+                .box-office {
+                    position : absolute;
+                    right    : 20px;
+                    top      : 10px;
+                    color    : #999;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+
 }
