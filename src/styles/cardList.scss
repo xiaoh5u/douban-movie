@@ -3,7 +3,17 @@
     flex-shrink: 0;
 }
 
+.weekly-movie-container {
+    width      : 16.6%;
+    flex-shrink: 0;
+}
+
 .new-movie-container {
+    width      : 25%;
+    flex-shrink: 0;
+}
+
+.top250-movie-container {
     width      : 25%;
     flex-shrink: 0;
 }
@@ -23,16 +33,16 @@
 }
 
 .loading-img-box {
-    height: 300px;
-    display: flex;
-    flex-direction:column;
-    justify-content: space-between;
+    height          : 300px;
+    display         : flex;
+    flex-direction  : column;
+    justify-content : space-between;
     position        : relative;
     background-color: #f5f6f7;
     cursor          : not-allowed;
 }
 
-.loading-img{
+.loading-img {
     position : absolute;
     top      : 30%;
     left     : 50%;
@@ -41,32 +51,57 @@
     transform: translate(-50%, -50%);
 }
 
-// .num-tag {
-//     position   : absolute;
-//     left       : 0;
-//     top        : 10px;
-//     z-index    : 10;
-//     text-align : center;
-//     width      : 44px;
-//     height     : 53px;
-//     line-height: 40px;
-//     color      : #fff;
-//     font-size  : 18px;
-//     background : url(//www.iqiyipic.com/common/fix/site-v4/mod-num-icon.png) no-repeat 0 0;
-// }
+.num-tag {
+    position   : absolute;
+    left       : 0;
+    top        : 10px;
+    z-index    : 10;
+    text-align : center;
+    width      : 44px;
+    height     : 53px;
+    line-height: 40px;
+    color      : #fff;
+    font-size  : 18px;
+    background : url(//www.iqiyipic.com/common/fix/site-v4/mod-num-icon.png) no-repeat 0 0;
+}
 
-// .num-tag1 {
-//     background-position-x: -50px;
-// }
+.num-tag1 {
+    background-position-x: -50px;
+}
 
-// .num-tag2 {
-//     background-position-x: -100px;
-// }
+.num-tag2 {
+    background-position-x: -100px;
+}
 
-// .num-tag3 {
-//     background-position-x: -150px;
-// }
+.num-tag3 {
+    background-position-x: -150px;
+}
 
-// li {
-//     position: relative;
-// }
+li {
+    position: relative;
+}
+
+.weeklyTag {
+    top : 315px !important;
+    left: 156px !important;
+}
+
+.big {
+    width : calc(16.6% *2);
+    height: calc(371px * 2 + 40px);
+
+    .card-img {
+        height: calc(300px * 2 + 40px);
+    }
+
+    .ant-card-meta-title {
+        font-size: 30px;
+    }
+
+    .movie-card {
+        height: 100%;
+    }
+}
+.loading-big{
+    height: calc(300px * 2 + 20px);
+}

@@ -37,6 +37,7 @@
 .box {
     display        : flex;
     justify-content: space-between;
+    margin-bottom  : 20px;
 
     .newMovie {
 
@@ -80,6 +81,10 @@
                     }
                 }
 
+                &:last-child {
+                    padding-bottom: 10px;
+                }
+
                 &:hover {
                     .title {
                         transition: 0.5s all;
@@ -92,15 +97,16 @@
                 }
 
                 .title {
-                    font-size  : 20px;
-                    font-weight: 800;
+                    font-size    : 20px;
+                    font-weight  : 800;
+                    margin-bottom: 5px;
                 }
 
                 .rank {
                     width                  : 45px;
                     text-align             : center;
                     font-size              : 40px;
-                    font-weight            : 800;
+                    font-weight            : 600;
                     -webkit-text-fill-color: transparent;
                     background-clip        : text;
                     background-color       : #666;
@@ -108,11 +114,13 @@
 
                 .info {
                     margin-left: 10px;
-                    padding-top: 10px;
+                    padding-top: 8px;
 
                     .summary {
-                        font-size  : 14px;
-                        font-weight: 400;
+                        font-size    : 14px;
+                        font-weight  : 400;
+                        color        : #999;
+                        margin-bottom: 0;
 
                         span {
                             color: #999;
@@ -135,4 +143,37 @@
         }
     }
 
+}
+
+.top250-container {
+    ul {
+        position    : relative;
+        padding-left: calc(16.6% *2);
+
+        li:nth-of-type(9n+1) {
+            position: absolute;
+            left    : 0;
+
+            .tag-orange {
+                font-size    : 32px;
+                line-height  : 40px;
+                border-radius: 6px;
+                top          : 10px;
+                left         : 10px;
+            }
+
+        }
+
+        li:nth-of-type(10) {
+            top: calc(371px * 2 + 60px);
+        }
+
+        li:nth-of-type(19) {
+            top: calc((371px * 2 + 60px)*2);
+        }
+
+        li:nth-of-type(28) {
+            top: calc((371px * 2 + 60px)*3);
+        }
+    }
 }

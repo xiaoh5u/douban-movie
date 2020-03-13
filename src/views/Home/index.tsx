@@ -1,25 +1,27 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Carousel, BackTop } from 'antd';
+import { Link } from 'react-router-dom';
 import TopNav from '../../compoents/TopNav';
 import CardList from '../../compoents/CardList'
 import api from '../../api/api'
 import classnames from 'classnames'
 import './home.scss'
-import { Link } from 'react-router-dom';
 
 interface IState {
-    bannerList: Array<string>
-    hotList: Array<string>
-    isActive: boolean
-    newList: Array<string>
-    usData: any
+    bannerList: Array<string>,
+    hotList: Array<string>,
+    isActive: boolean,
+    newList: Array<string>,
+    usData: any,
     isLoadingHotShow: boolean,
     isLoadingNewMovie: boolean,
-    isLoadingGoodBox: boolean,
     isLoadingWeeklyBox: boolean,
     isLoadingTop250: boolean,
+    weeklyList: Array<string>,
+    top250List: Array<string>,
 }
-class home extends Component<IState> {
+
+class home extends PureComponent<IState> {
 
     readonly state: Readonly<IState> = {
         bannerList: [
@@ -31,11 +33,12 @@ class home extends Component<IState> {
         ],
         hotList: [],
         newList: [],
+        weeklyList: [],
+        top250List: [],
         isActive: false,
         usData: {},
         isLoadingHotShow: true,
         isLoadingNewMovie: true,
-        isLoadingGoodBox: true,
         isLoadingWeeklyBox: true,
         isLoadingTop250: true,
     }
@@ -44,30 +47,31 @@ class home extends Component<IState> {
     getData = () => {
         api.getHotMovie().then((res: any) => { this.setState({ hotList: res.data.subjects, isLoadingHotShow: false }) })
         api.getNewMovie().then((res: any) => { this.setState({ newList: res.data.subjects, isLoadingNewMovie: false }) })
-        api.getusMovie().then((res: any) => { this.setState({ usData: res.data, isLoadingGoodBox: false }) })
-
+        api.getusMovie().then((res: any) => { this.setState({ usData: res.data }) })
+        api.getWeeklyMovie().then((res: any) => { this.setState({ weeklyList: res.data.subjects, isLoadingWeeklyBox: false }) })
+        api.getTop250Movie().then((res: any) => { this.setState({ top250List: res.data.subjects, isLoadingTop250: false }) })
     }
 
     //头部导航监听事件
     handleScroll = () => {
-        const scrollTop: number = window.scrollY
+        const scrollTop: any = window.scrollY
         const isActive = this.state.isActive
         if (scrollTop > 0 && !isActive) {
             this.setState({
                 isActive: true
             })
-
         } else if (scrollTop == 0) {
             this.setState({
                 isActive: false
             })
         }
+        sessionStorage.setItem('scrollTop', scrollTop)
     }
 
 
     render() {
-        const { bannerList, hotList, isActive, newList, usData, isLoadingHotShow, isLoadingNewMovie, isLoadingGoodBox, isLoadingWeeklyBox, isLoadingTop250 } = this.state
-        const usList = usData.subjects
+        const { bannerList, hotList, isActive, newList, usData, isLoadingHotShow, isLoadingNewMovie, isLoadingWeeklyBox, isLoadingTop250, weeklyList, top250List } = this.state
+
         return (
             <>
                 {/* 吸顶导航组件 */}
@@ -140,32 +144,36 @@ class home extends Component<IState> {
                         </div>
                     </div>
 
-
-
+                    {/* 一周口碑榜 */}
+                    <div className="weekTop">
+                        <h2 className="card-title">一周口碑榜</h2>
+                        <ul className={classnames('weekMovie', 'hotMovie')}>
+                            <CardList list={weeklyList.slice(0, 6)} name={'weekly-movie-container'} {...this.props} count={6} isLoading={isLoadingWeeklyBox}></CardList>
+                        </ul>
+                    </div>
+                    {/* TOP250 */}
+                    <div className="top250-container">
+                        <h2 className="card-title">Top250</h2>
+                        <ul className={classnames('top250-box', 'hotMovie')}>
+                            <CardList list={top250List} name={'top250-movie-container'} {...this.props} count={9} isLoading={isLoadingTop250} />
+                        </ul>
+                    </div>
                     <BackTop />
                 </div>
 
             </>
         );
     }
-    componentDidMount() {
+    componentWillMount() {
         this.getData()
+    }
+    
+    componentDidMount() {
         window.addEventListener('scroll', this.handleScroll);
-
-        // 恢复到离开页面时的位置
-        const scrollTop: any = sessionStorage.getItem('scrollTop')
-        if (scrollTop != '' || scrollTop != undefined) {
-            setTimeout(() => {
-                window.scrollTo(0, scrollTop)
-            }, 500)
-        }
     }
-    componentWillUnmount() {
-        // 记录离开页面时的位置
-        const scrollTop: any = document.documentElement.scrollTop || document.body.scrollTop
-        sessionStorage.setItem('scrollTop', scrollTop)
+    componentWillUnmount(){
+        window.removeEventListener('scroll', this.handleScroll);
     }
-
 
 
 }

@@ -22,16 +22,16 @@ class card extends Component<IProps> {
                 {
                     list.map((item: number, index: number) => {
                         return (
-                            <div className={name} key={index}>
+                            <li className={classnames(name, index == 0 && name == 'top250-movie-container' ? "big loading-big" : null)} key={index}>
                                 <Card
                                     key={index}
                                     loading={true}
                                     className={classnames("movie-card", 'loading-img-box')}
                                     cover={
-                                        <img className="loading-img" src={require('../assets/loading.svg')} alt="loading" />
+                                        <img className="loading-img " src={require('../assets/loading.svg')} alt="loading" />
                                     }
                                 />
-                            </div>
+                            </li>
                         );
                     })
                 }
@@ -40,34 +40,47 @@ class card extends Component<IProps> {
     }
     render() {
         const { list, name, count, isLoading } = this.props
-        const data = {
-            count, name
-        }
+        const data = {count, name}
         return (
             <>
                 {isLoading ? this.CardListSkeleton(data) :
-                    list.map((item: any, index: number) =>
-                        <li className={name} key={index}>
-                            {/* <div className={classnames(name == 'new-movie-container' ? 'num-tag' : null, name == 'new-movie-container' ? `num-tag${index + 1}` : '')}>{name == 'new-movie-container' ? index + 1 : ''}</div> */}
-                            <Card
-                                className="movie-card"
-                                hoverable
-                                cover={
-                                    <Link to={`/detail/${item.id}`}>
-                                        <LazyLoad height={200} offset={100} >
-                                            <img className="card-img" src={item.images.small} alt="" />
-                                        </LazyLoad>
-                                    </Link>
-                                }
-                            >
-                                {/* {name != 'new-movie-container' && <Tag className="img-tag tag-orange">{item.rating.average}</Tag>} */}
-                                <Tag className="img-tag tag-orange">{item.rating.average}</Tag>
-                                <Card.Meta
-                                    title={item.title}
-                                    description={item.genres.join("/")}
-                                />
-                            </Card>
-                        </li>
+                    list.map((item: any, index: number) => {
+                        // 一周口碑榜数据返回格式有所不同，需要重新做判断
+                        let isWeekly: boolean = name == 'weekly-movie-container' ? true : false
+                        if (isWeekly) item = item.subject
+
+                        // 为数组中的如下位置增加big 类名
+                        const condition: Array<number> = [0, 9, 18, 27]
+                        let isBig: boolean = false
+                        if(condition.includes(index) && name == 'top250-movie-container') isBig = true 
+
+                        // 返回结果中的大图依然清晰度很低，原因是图片链接有误，下面使用正则替换相应值
+                        const reg = new RegExp('s_ratio', 'ig')
+                        const bigImg: any = item.images.small.replace(reg, 'l_ratio')
+                        return (
+                            <li className={classnames(name, isBig ? "big" : null)} key={index}>
+                                {isWeekly && <div className={classnames('num-tag', `num-tag${index + 1}`)}>{index + 1}</div>}
+                                <Card
+                                    className="movie-card"
+                                    hoverable
+                                    cover={
+                                        <Link to={`/detail/${item.id}`}>
+                                            <LazyLoad height={200} offset={100} >
+                                                <img className="card-img" src={isBig ? bigImg : item.images.small} alt="" />
+                                            </LazyLoad>
+                                        </Link>
+                                    }
+                                >
+                                    <Tag className={classnames(isWeekly ? 'weeklyTag' : null, 'img-tag ', 'tag-orange')}>{item.rating.average}</Tag>
+                                    <Card.Meta
+                                        title={item.title}
+                                        description={item.genres.join("/")}
+                                    />
+                                </Card>
+                            </li>
+                        )
+                    }
+
                     )}
 
             </>

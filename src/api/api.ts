@@ -27,6 +27,14 @@ class api {
         return api.getInfo('us_box')
     }
 
+    //获取一周口碑榜的电影数据
+    static getWeeklyMovie() {
+        return api.getInfo('weekly')
+    }
+    static getTop250Movie() {
+        return api.getInfo('top250', { count: 36 })
+    }
+
 
 }
 
