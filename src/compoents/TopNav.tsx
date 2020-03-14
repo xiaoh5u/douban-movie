@@ -1,23 +1,82 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import { Link } from 'react-router-dom'
 import '../styles//topNav.scss'
+import api from '../api/api'
 import classnames from 'classnames'
+import { inject, observer } from 'mobx-react' // 两个内置组件，用来连接仓库
+
 interface IProps {
+    first: any
     isActive: boolean
+    store?: any
 }
 interface IState {
+    resData: Array<string>
 }
-class TopNav extends Component<IProps, IState> {
 
+let timer: NodeJS.Timer //初始化在Sate里无法定义，故在此定义全局变量
+
+
+
+@inject('store')
+
+@observer
+
+class TopNav extends PureComponent<IProps, IState> {
+    state = {
+        resData: [],
+    }
+    // 节流
+    searchInput = (ev: any) => {
+        const value: string = ev.target.value
+        if (!value) return
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+            api.getSearchInfo(value).then((res: any) => {
+                this.setState({
+                    resData: res.data
+                })
+            })
+        }, 500)
+    }
+
+    searchResult = (isBlock: boolean) => {
+        const { resData } = this.state
+        return (
+            <ul className={classnames('search-result', isBlock ? 'block' : '')}>
+                {resData.map((item: any, index: number) =>
+                    <li className="child" key={index}>
+                        <img src={item.img} alt="" />
+                        <div className="nameBox">
+                            <div className="top">
+                                <Link to={`/detail/${item.id}`}>
+                                    <span className="cn-name">{item.title}</span>
+                                </Link>
+                                {item.year && <span className="year">{item.year}</span>}
+                            </div>
+                            <div className="bottom">
+                                <span className="en-name">{item.sub_title}</span>
+                            </div>
+                        </div>
+
+                    </li>
+                )}
+            </ul>
+        )
+    }
     render() {
-        const { isActive } = this.props
+        const { isActive, first } = this.props
+        const { isBlock, changeBlock } = this.props.store.display
+        console.log(isBlock)
         return (
             <>
                 <header>
                     <div className="logo"></div>
                     <div className={classnames('search', isActive ? 'active' : '')}>
-                        <input type="text" placeholder="请输入要查询的影片" />
+                        <input onChange={(ev) => { this.searchInput(ev) }} onFocus={() => { changeBlock(true) }} onBlur={() => { changeBlock(false) }} type="text" placeholder={first ? first.title : null} />
                         <div className="button"><i className="iconfont icon-search1187938easyiconnet"></i>全网搜</div>
                     </div>
+                    {this.state.resData && this.searchResult(isBlock)}
                 </header>
             </>
         );

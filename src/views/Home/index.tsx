@@ -69,6 +69,8 @@ class home extends PureComponent<IState> {
     }
 
 
+
+
     render() {
         const { bannerList, hotList, isActive, newList, usData, isLoadingHotShow, isLoadingNewMovie, isLoadingWeeklyBox, isLoadingTop250, weeklyList, top250List } = this.state
 
@@ -77,7 +79,7 @@ class home extends PureComponent<IState> {
                 {/* 吸顶导航组件 */}
                 <div className={classnames("topContainer", isActive ? 'active' : '')}>
                     <div className="w">
-                        <TopNav {...this.props} isActive={isActive} />
+                        <TopNav  isActive={isActive} first={hotList[0]} />
                     </div>
                 </div>
                 <div className="banner">
@@ -167,11 +169,11 @@ class home extends PureComponent<IState> {
     componentWillMount() {
         this.getData()
     }
-    
+
     componentDidMount() {
         window.addEventListener('scroll', this.handleScroll);
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll);
     }
 

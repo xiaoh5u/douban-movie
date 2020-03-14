@@ -13,6 +13,16 @@ module.exports = function (app) {
             },
         )
     )
-   
+    app.use(
+        proxy(
+            '/douban/search/api/', {
+                target: 'https://movie.douban.com/',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/douban/search/api/': ''
+                }
+            },
+        )
+    )
 
 }
