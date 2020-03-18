@@ -23,6 +23,6 @@ export default function CustomRoute(props: any) {
     if (matchRoute) {
         return <Route exact={!matchRoute.hasChild} path={matchRoute.path} component={matchRoute.component} />
     }
-    return <Redirect to='/404' />
+    return <Redirect to='/error' />
 }
 

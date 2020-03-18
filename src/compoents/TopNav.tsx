@@ -41,7 +41,8 @@ class TopNav extends PureComponent<IProps, IState> {
     }
 
     searchResult = (isBlock: boolean) => {
-        const { resData } = this.state
+        let { resData } = this.state
+        if (!isBlock) this.setState({ resData: [] })
         return (
             <ul className={classnames('search-result', isBlock ? 'block' : '')}>
                 {resData.map((item: any, index: number) =>
