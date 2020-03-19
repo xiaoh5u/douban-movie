@@ -79,7 +79,7 @@ class home extends PureComponent<IState> {
                 {/* 吸顶导航组件 */}
                 <div className={classnames("topContainer", isActive ? 'active' : '')}>
                     <div className="w">
-                        <TopNav  isActive={isActive} first={hotList[0]} />
+                        <TopNav {...this.props} isActive={isActive} first={hotList[0]} />
                     </div>
                 </div>
                 <div className="banner">
@@ -174,7 +174,10 @@ class home extends PureComponent<IState> {
         window.addEventListener('scroll', this.handleScroll);
     }
     componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll);
+        if (this.handleScroll) {
+            window.removeEventListener('scroll', this.handleScroll);
+        }
+     
     }
 
 

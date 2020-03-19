@@ -12,6 +12,7 @@ interface IProps {
 }
 interface IState {
     resData: Array<string>
+    isValue: string
 }
 
 let timer: NodeJS.Timer //初始化在Sate里无法定义，故在此定义全局变量
@@ -25,10 +26,12 @@ let timer: NodeJS.Timer //初始化在Sate里无法定义，故在此定义全�
 class TopNav extends PureComponent<IProps, IState> {
     state = {
         resData: [],
+        isValue: ''
     }
     // 节流
     searchInput = (ev: any) => {
         const value: string = ev.target.value
+        this.setState({ isValue: value })
         if (!value) return
         if (timer) clearTimeout(timer)
         timer = setTimeout(() => {
@@ -42,7 +45,6 @@ class TopNav extends PureComponent<IProps, IState> {
 
     searchResult = (isBlock: boolean) => {
         let { resData } = this.state
-        if (!isBlock) this.setState({ resData: [] })
         return (
             <ul className={classnames('search-result', isBlock ? 'block' : '')}>
                 {resData.map((item: any, index: number) =>
@@ -65,16 +67,23 @@ class TopNav extends PureComponent<IProps, IState> {
             </ul>
         )
     }
+
+    setData = () => {
+        const { isValue, resData } = this.state
+        if (!isValue && resData) {
+            this.setState({ resData: [] })
+        }
+    }
+
     render() {
         const { isActive, first } = this.props
         const { isBlock, changeBlock } = this.props.store.display
-        console.log(isBlock)
         return (
             <>
                 <header>
                     <div className="logo"></div>
                     <div className={classnames('search', isActive ? 'active' : '')}>
-                        <input onChange={(ev) => { this.searchInput(ev) }} onFocus={() => { changeBlock(true) }} onBlur={() => { changeBlock(false) }} type="text" placeholder={first ? first.title : null} />
+                        <input onChange={(ev) => { this.searchInput(ev) }} onFocus={() => { changeBlock(true) }} onBlur={() => { setTimeout(()=>{changeBlock(false); this.setData()},200) }} type="text" placeholder={first ? first.title : null} />
                         <div className="button"><i className="iconfont icon-search1187938easyiconnet"></i>全网搜</div>
                     </div>
                     {this.state.resData && this.searchResult(isBlock)}

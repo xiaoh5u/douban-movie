@@ -16,6 +16,15 @@
     box-shadow      : 0px 1px 15px -4px #121111;
     padding         : 20px;
 
+    a {
+        color: #37a;
+
+        &:hover {
+            color           : #fff;
+            background-color: #37a;
+        }
+    }
+
     .photo {
         width     : 230px;
         overflow  : hidden;
@@ -23,6 +32,21 @@
 
         img {
             width: 100%;
+        }
+    }
+
+    .top {
+        display        : flex;
+        align-items    : flex-start;
+        justify-content: flex-start;
+        font-size      : 16px;
+
+        .info {
+            margin-left: 20px;
+            color      : #666666;
+            li{
+                line-height: 28px;
+            }
         }
     }
 }

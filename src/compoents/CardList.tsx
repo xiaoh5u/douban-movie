@@ -4,6 +4,7 @@ import LazyLoad from 'react-lazyload';
 import '../styles/cardList.scss'
 import { Link } from 'react-router-dom';
 import classnames from 'classnames'
+import { normalize } from 'path';
 
 
 interface IProps {
@@ -57,6 +58,7 @@ class card extends Component<IProps> {
                         // 返回结果中的大图依然清晰度很低，原因是图片链接有误，下面使用正则替换相应值
                         const reg = new RegExp('s_ratio', 'ig')
                         const bigImg: any = item.images.small.replace(reg, 'l_ratio')
+
                         return (
                             <li className={classnames(name, isBig ? "big" : null)} key={index}>
                                 {isWeekly && <div className={classnames('num-tag', `num-tag${index + 1}`)}>{index + 1}</div>}
