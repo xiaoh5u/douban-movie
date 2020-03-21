@@ -1,66 +1,229 @@
 .black {
-    background-color: #44883e;
-    height          : 280px;
+    background-color: rgb(45, 46, 54);
+    height          : 350px;
+
 }
 
-.main {
-    position        : absolute;
-    top             : 65px;
-    left            : 0;
-    right           : 0;
-    margin          : auto;
-    height          : 1000px;
-    width           : 950px;
-    background-color: #fff;
-    font-size       : 50px;
-    box-shadow      : 0px 1px 15px -4px #121111;
-    padding         : 20px;
+.w {
+    position: relative;
+}
 
-    a {
-        color: #37a;
-
-        &:hover {
-            color           : #fff;
-            background-color: #37a;
-        }
-    }
+.head {
+    position       : absolute;
+    top            : -249px;
+    left           : 0;
+    right          : 0;
+    margin         : auto;
+    font-size      : 50px;
+    height         : 250px;
+    display        : flex;
+    justify-content: flex-start;
+    align-items    : center;
 
     .photo {
         width     : 230px;
         overflow  : hidden;
         box-shadow: 2px 2px 4px 0px #121111;
+        position  : absolute;
+        top       : 20px;
 
         img {
             width: 100%;
         }
     }
 
-    .top {
-        display        : flex;
-        align-items    : flex-start;
-        justify-content: flex-start;
-        font-size      : 16px;
+    .name {
+        width      : 450px;
+        margin-left: 500px;
+        color      : white;
+        font-size  : 75px;
+        font-weight: 600;
+        text-align : center;
+    }
 
-        .info {
-            margin-left: 20px;
-            color      : #666666;
-            li{
-                line-height: 28px;
+    .rating {
+        align-self     : end;
+        flex           : 1;
+        height         : 100%;
+        display        : flex;
+        flex-direction : column;
+        justify-content: flex-start;
+        align-items    : center;
+
+        .score {
+            color: rgb(255, 92, 56);
+
+            .score1 {
+                font-size: 85px;
+            }
+
+            .score {
+                font-size: 60px;
+            }
+        }
+
+
+
+        .rating-people {
+            font-size  : 18px;
+            line-height: 38px;
+            color      : #ccc;
+        }
+
+    }
+
+
+}
+
+.star {
+    width     : 75px;
+    height    : 15px;
+    background: url(../../assets/ic_rating_m.png)no-repeat;
+}
+
+.bigStar45 {
+    background-position: 0px -15px;
+}
+
+.bigStar40 {
+    background-position: 0px calc(-15px * 2);
+}
+
+.bigStar35 {
+    background-position: 0px calc(-15px * 3);
+}
+
+.bigStar30 {
+    background-position: 0px calc(-15px * 4);
+}
+
+.bigStar25 {
+    background-position: 0px calc(-15px * 5);
+}
+
+.bigStar20 {
+    background-position: 0px calc(-15px * 6);
+}
+
+.bigStar15 {
+    background-position: 0px calc(-15px * 7);
+}
+
+.bigStar10 {
+    background-position: 0px calc(-15px * 8);
+}
+
+.bigStar05 {
+    background-position: 0px calc(-15px * 9);
+}
+
+.bigStar00 {
+    background-position: 0px calc(-15px * 10);
+}
+
+a {
+    color: #37a;
+
+    &:hover {
+        color           : #fff;
+        background-color: #37a;
+    }
+}
+
+.main {
+    position : relative;
+    top      : 180px;
+    font-size: 16px;
+
+    .title {
+        font-size  : 30px;
+        font-weight: bold;
+
+        .name {
+            color: #494949;
+        }
+
+        .year {
+            color: #888888;
+        }
+    }
+
+    .tags {
+
+        padding: 15px 0;
+    }
+
+    .sub-title {
+        font-size  : 18px;
+        color      : #007722;
+        padding-top: 25px;
+    }
+
+    .photos {
+        display        : flex;
+        justify-content: flex-start;
+        align-items    : center;
+        width          : 100%;
+        overflow-x     : scroll;
+
+        span {
+            height      : 200px;
+            margin-right: 5px;
+
+            img {
+                display: inline-block;
+                width  : auto;
+                height : 100%;
+            }
+        }
+    }
+
+    .comment {
+        li {
+            padding   : 20px 0;
+            border-top: 1px solid #eaeaea;
+
+            .user {
+                display        : flex;
+                justify-content: flex-start;
+                align-items    : center;
+
+                .headImg {
+                    width : 32px;
+                    height: 32px;
+
+                    img {
+                        width: 100%;
+                    }
+                }
+
+                .userName {
+                    padding: 0 6px;
+                }
+            }
+
+            .comment-title {
+                padding: 10px 0;
+            }
+        }
+
+        .comment-summary {
+            overflow: hidden;
+
+            .btn {
+                color: #37a;
+                cursor: pointer;
+                &:hover {
+                    color           : #fff;
+                    background-color: #37a;
+                }
             }
         }
     }
 }
-
-.title {
-    font-size     : 40px;
-    font-weight   : bold;
-    padding-bottom: 15px;
-
-    .name {
-        color: #494949;
-    }
-
-    .year {
-        color: #888888;
+.image-wrapper{
+    margin-bottom: 15px;
+    img{
+        width: 100%;
     }
 }

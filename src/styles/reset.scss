@@ -38,14 +38,13 @@ html{
   font-size: 20px;
 }
 body{
-  font-family: numFont, PingFangSC-Regular, Tahoma, "Microsoft Yahei", sans-serif;
+  font-family: numFont, PingFangSC-Regular, Tahoma, "Microsoft Yahei", sans-serif!important;
 }
 input {
 	color      : inherit;
 	font-size  : inherit;
 	font-family: inherit;
 }
-
 textarea {
 	resize: none;
 }

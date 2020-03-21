@@ -31,18 +31,23 @@ class api {
     static getWeeklyMovie() {
         return api.getInfo('weekly')
     }
-    
+
     // 获取Top250数据
     static getTop250Movie() {
         return api.getInfo('top250', { count: 36 })
     }
     // 获取搜索数据
     static getSearchInfo(str: string) {
-        return  axios.get(`douban/search/api/j/subject_suggest?q=${str}`)
+        return axios.get(`douban/search/api/j/subject_suggest?q=${str}`)
     }
     // 获取详情
     static getDetail(id: string) {
         return api.getInfo(`subject/${id}`)
+    }
+
+    // 获取更多评论
+    static getComment(id: string) {
+        return axios.get(`douban/comment/api/${id}/full`)
     }
 }
 

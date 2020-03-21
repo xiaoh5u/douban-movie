@@ -25,4 +25,16 @@ module.exports = function (app) {
         )
     )
 
+    app.use(
+        proxy(
+            '/douban/comment/api/', {
+                target: 'https://movie.douban.com/j/review/',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/douban/comment/api/': ''
+                }
+            },
+        )
+    )
+
 }
