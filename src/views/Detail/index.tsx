@@ -4,13 +4,14 @@ import { RouteComponentProps } from 'react-router-dom'
 import api from '../../api/api'
 import './index.scss'
 import classnames from 'classnames'
-import { Tag } from 'antd'
+import { Card, Tag } from 'antd';
 interface IProps {
     match: any
 }
 interface IState {
     id: number
     isLoading: boolean
+    imgLoading: boolean
     detail: {
         title: string,
         original_title: string,
@@ -38,6 +39,7 @@ class index extends PureComponent<IProps, IState, RouteComponentProps>{
     state: any = {
         id: this.props.match.params.id,
         isLoading: true,
+        imgLoading: true,
         detail: {
             title: '',
             original_title: '',
@@ -100,18 +102,44 @@ class index extends PureComponent<IProps, IState, RouteComponentProps>{
             }
         ]
     }
-
-    regImg(detail: any) {
-        console.log(detail)
+    loadImg = () => {
+        this.setState({
+            imgLoading: false
+        })
+    }
+    regImg = (detail: any) => {
         if (!detail) return
+        const imgLoading = this.state.imgLoading
+        let divStyle = {
+            display: imgLoading ? 'none' : 'block'
+        };
+
         const regSize = new RegExp('s_ratio', 'ig')
         let bigImg: string = detail.images.small.replace(regSize, 'l_ratio')
-        // bigImg = bigImg.replace(/http:\/\/{1}/ig, 'https://images.weserv.nl/?url=');
+
+
+        return (<div className="photo" style={divStyle}>
+            <img src={bigImg} alt="" onLoad={this.loadImg} />
+        </div>)
+    }
+    loadCard() {
         return (
-            <div className="photo">
-                <img src={bigImg} alt="" />
+            <div className='loadContainer'>
+                <Card
+                    loading={true}
+                    className={classnames('loading-img-box')}
+                    cover={
+                        <img className="loading-img " src={require('../../assets/loading.svg')} alt="loading" />
+                    }
+                />
             </div>
         )
+    }
+
+    setBlock() {
+        const ele: any = document.querySelector('.photo')
+        // ele.style.display = 'block'
+        // ele.setAttribute('style', 'display:block');
     }
 
     manyNames(list: any) {
@@ -221,13 +249,15 @@ class index extends PureComponent<IProps, IState, RouteComponentProps>{
     }
 
     render() {
-        const { detail, isLoading, infoList } = this.state
-        const { regImg, computedScore, computedStars } = this
+        const { detail, isLoading, infoList, imgLoading } = this.state
+        const { regImg, computedScore, computedStars, loadCard } = this
+        console.log(imgLoading)
         return (
             <>
                 <div className="black"></div>
                 <div className="w">
                     {!isLoading && <div className="head">
+                        {imgLoading ? loadCard() : null}
                         {regImg(detail)}
                         <span className='name sl'>{detail.original_title}</span>
                         <div className="rating">
@@ -276,7 +306,7 @@ class index extends PureComponent<IProps, IState, RouteComponentProps>{
                         </h2>
                         <div className="photos">
                             {detail.photos.map((item: any, index: number) => {
-                                let {image} = item
+                                let { image } = item
                                 // image = item.image.replace(/https:\/\/{1}/ig, 'https://images.weserv.nl/?url=');
                                 // image = image.replace(/\/l\//ig, '/s/')
                                 return (
@@ -332,7 +362,9 @@ class index extends PureComponent<IProps, IState, RouteComponentProps>{
     }
 
     componentDidMount() {
+        if (!this.state.imgLoading) {
 
+        }
     }
 }
 export default index

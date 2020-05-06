@@ -14,6 +14,7 @@ interface IProps {
 }
 class card extends Component<IProps> {
 
+    
     CardListSkeleton(data: any) {
         let { count, name } = data;
         let list = new Array(count || 6).fill(1);
